@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # django rest framework
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     # my apps
     'account_app',
     'product_app',
@@ -51,6 +52,15 @@ INSTALLED_APPS = [
     # packages
     'tinymce',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:9451",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js'
 # TINYMCE_COMPRESSOR = False
@@ -74,6 +84,7 @@ TINYMCE_DEFAULT_CONFIG = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
