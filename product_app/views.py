@@ -46,11 +46,4 @@ class ProductDetailAPIView(APIView):
             {'related_products': related_products}
         ]
         
-        return Response(context)    
-    
-    def post(self, request, pk, slug, format=None):
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(context)

@@ -51,7 +51,16 @@ INSTALLED_APPS = [
     
     # packages
     'tinymce',
+    'drf_spectacular',
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Buy From German Shop',
+    'DESCRIPTION': 'this page for site apis',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -175,15 +184,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account_app.CustomUser'
 
 
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAdminUser'
-#     ],
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #         'rest_framework.authentication.BasicAuthentication',
-    #         'rest_framework.authentication.TokenAuthentication',
-    #         'rest_framework.authentication.SessionAuthentication',
-    #     ],
-# }
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.TokenAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+        ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
