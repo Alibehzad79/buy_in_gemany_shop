@@ -14,13 +14,15 @@ class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Comment
-        exclude = ('id', 'status') 
+        exclude = ('id', 'status')
+        # fields = "__all__" 
 
 class ProductSerializer(serializers.ModelSerializer):
     galleries = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
+    get_absolute_url = serializers.URLField()
     
     class Meta:
         model = Product

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
+from django.urls import reverse
 
 # Create your models here.
 
@@ -53,12 +54,15 @@ class Product(models.Model):
         return self.slug
     
     
+    def get_absolute_url(self):
+            return reverse("products_detail", kwargs={"pk": self.pk, 'slug': self.slug})
+    
     class Meta:
         verbose_name = _("محصول")
         verbose_name_plural = _("محصولات")
         ordering = [
             '-id'
-        ] 
+        ]
         
 class Gallery(models.Model):
     product = models.ForeignKey(Product, verbose_name=_("محصول"), on_delete=models.CASCADE, related_name="galleries")
