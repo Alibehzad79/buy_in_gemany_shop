@@ -50,6 +50,16 @@ class ProductDetailAPIView(APIView):
         return Response(context)
 
 class CommentAPIView(APIView):
+    """
+        {
+            "name": "str",
+            "text": "str",
+            "product": int,
+            "email": "str@ex.com"
+        }
+    
+    """
+    
     permission_classes = [permissions.IsAuthenticated]
     
     

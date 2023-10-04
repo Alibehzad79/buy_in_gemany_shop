@@ -34,7 +34,7 @@ class Product(models.Model):
         ('unavalible', 'ناموجود')
     )
     title = models.CharField(verbose_name=_('عنوان محصول'), max_length=100)
-    slug = models.SlugField(_("اسلاگ"), help_text=_("product-name"))
+    slug = models.SlugField(_("اسلاگ"), help_text=_("product-name"), unique=True)
     content = HTMLField(verbose_name=_("توضیحات محصول"))
     image = models.ImageField(_("تصویر محصول"), upload_to="images/products/")
     price = models.BigIntegerField(_("قیمت محصول"))
