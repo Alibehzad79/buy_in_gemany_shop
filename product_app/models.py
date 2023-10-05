@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
@@ -87,6 +88,7 @@ class Comment(models.Model):
     answre = models.TextField(_("جواب"))
     date_send = models.DateField(_("تاریخ ارسال"), auto_now=False, auto_now_add=False)
     status = models.CharField(_("وضعیت"), max_length=50, choices=STATUS, default='pendding')
+    
     def __str__(self):
         return f"{self.email} ({self.get_status_display()})"
     

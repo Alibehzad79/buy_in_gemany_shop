@@ -10,6 +10,14 @@ from account_app.serializers import UserSerializer, UserDetail
 
 @api_view(['POST'])
 def register_user(request):
+    """
+        {
+            "username": "str",
+            "email": "email@example.com",
+            "password": "str",
+            "phone_number": "09123456789"
+        }
+    """
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():

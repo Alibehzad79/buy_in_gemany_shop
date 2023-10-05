@@ -11,7 +11,6 @@ class CommentSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)
     answre = serializers.CharField(read_only=True, required=False)
     date_send = serializers.DateField(default=datetime.date.today())
-    
     class Meta:
         model = Comment
         exclude = ('id', 'status')
