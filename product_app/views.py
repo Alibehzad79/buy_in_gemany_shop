@@ -53,6 +53,7 @@ class ProductDetailAPIView(APIView):
 class CommentAPIView(APIView):
     """
         {
+            \n
             "name": "str",
             "text": "str",
             "product": int,

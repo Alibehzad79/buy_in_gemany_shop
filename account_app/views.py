@@ -5,18 +5,19 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from account_app.serializers import UserSerializer, UserDetail
+from drf_spectacular.utils import extend_schema
 # Create your views here.
 
 
 @api_view(['POST'])
-def register_user(request):
+def register_user(request):      
     """
-        {
-            "username": "str",
-            "email": "email@example.com",
-            "password": "str",
-            "phone_number": "09123456789"
-        }
+    {\n
+        "username": "str",
+        "email": "email@example.com",
+        "password": "str",
+        "phone_number": "09123456789"
+    }
     """
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)

@@ -12,7 +12,7 @@ class OrderAdmin(admin.ModelAdmin):
     
 @admin.register(PaidOrder)
 class PaidOrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'pay', 'complete', 'status', 'date_created')
+    list_display = ('user', 'payment', 'complete', 'status', 'date_created')
     list_filter = ('status', 'date_created', 'complete')
     list_editable = ('status', 'complete')
     search_fields = ('user', 'product')

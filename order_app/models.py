@@ -30,7 +30,7 @@ class PaidOrder(models.Model):
     user = models.ForeignKey(get_user_model(), verbose_name=_("کاربر"), on_delete=models.CASCADE, related_name="orders_pay")
     product = models.ForeignKey(Product, verbose_name=_("محصول"), on_delete=models.CASCADE)
     count = models.IntegerField(_("تعداد"), default=1)
-    pay = models.CharField(_("پرداختی"), max_length=100)
+    payment = models.CharField(_("پرداختی"), max_length=100)
     full_name = models.CharField(_("نام و نام خانوادگی"), max_length=100)
     phone_number = models.CharField(_("شماره تلفن"), max_length=50)
     post_code = models.CharField(_("کد پستی"), max_length=50)
