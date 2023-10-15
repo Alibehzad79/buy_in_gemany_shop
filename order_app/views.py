@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from order_app.serializers import OrderSerializer, PaidOrderSerializer, BankPaySerializer
 from order_app.models import Order
 from datetime import datetime
+from django.http import Http404
 
 # Create your views here.
 
@@ -44,9 +45,37 @@ class OrderAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["PUT"])
+@permission_classes([permissions.IsAuthenticated])
+def update_order(request, *args, **kwargs):
+    """
+        {
+        \n
+            "date_created": str -> like: "2023-10-13T21:30:21+03:30",
+            "count": int,
+            "user": int,
+            "product": int
+        }
+    
+    """
+    
+    order_id = kwargs["order_id"]
+    user_id = request.user.id
+    user = get_user_model().objects.get(id=user_id)
+    try:
+        order = user.orders.get(id=order_id)
+    except:
+        raise Http404()
+    serializer = OrderSerializer(order, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 class PaidOrderAPIView(APIView):
     """ 
     {
@@ -80,7 +109,7 @@ class PaidOrderAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 class BankPaySerializerAPIView(APIView):
     """
@@ -105,4 +134,4 @@ class BankPaySerializerAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)

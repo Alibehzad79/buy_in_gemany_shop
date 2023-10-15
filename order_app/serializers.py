@@ -6,7 +6,7 @@ class OrderSerializer(serializers.ModelSerializer):
     full_price = serializers.CharField(read_only=True)
     class Meta:
         model = Order
-        fields = ("date_created", "count", "user", "product", "full_price")
+        fields = ("id", "date_created", "count", "user", "product", "full_price")
         
     def get_full_price(self, obj):
         return obj.full_price()
