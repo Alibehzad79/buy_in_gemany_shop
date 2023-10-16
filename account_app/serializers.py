@@ -23,3 +23,13 @@ class UserDetail(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ("username", "first_name", "last_name", "phone_number", "email")
+
+class RestPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    
+    # def clean_email(self):
+    #     email = self.data['email']
+    #     print(email)
+    #     if get_user_model().objects.get(email=email).exists():
+    #         return email
+    #     return serializers.ValidationError("کاربری با این ایمیل یافت نشد.")
