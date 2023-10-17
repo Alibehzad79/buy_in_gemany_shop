@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -9,6 +9,10 @@ from drf_spectacular.utils import extend_schema
 from django.core.mail import send_mail
 from config import settings
 import secrets
+from account_app.forms import ResetPasswordFrom
+from django.http import HttpResponse
+from setting_app.models import Setting
+from django.utils.translation import gettext_lazy as _
 # Create your views here.
 
 
@@ -39,13 +43,15 @@ def user_detail(request):
 
 
 def send_email(user_id, email):
+    setting = Setting.objects.last()
+    url = setting.site_url
     user = get_user_model().objects.get(id=user_id)
     token = secrets.token_hex(256)
     user.reset_password_token = token
     user.save()
     status = send_mail(
-            "بازیابی رمز عبور",
-            f"http://127.0.0.1:8000/accounts/rest-password/{token}/",
+            f"{setting.site_name} <no-replay>",
+            f"برای بازیابی رمز عبور خود لینک زیر را باز کنید\n\nhttps://api.{url[8:]}accounts/reset-password-confirm/{token}/",
             settings.EMAIL_HOST_USER,
             [email],
             fail_silently=False,
@@ -61,10 +67,40 @@ def get_reset_password(request, *args, **kwargs):
                 user = get_user_model().objects.get(email=email)
             except:
                 return Response('کاربری یافت نشد', status=status.HTTP_400_BAD_REQUEST)
-            if get_user_model().objects.filter(email=email).exists():
-                send_email(email=email, user_id=user.id)
-                return Response("ایمیل بازیابی ارسال شد", status=status.HTTP_200_OK)
-            else:
-                return Response('ایمیل نامعتبر است.', status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+            send_email(email=email, user_id=user.id)
+            return Response("ایمیل بازیابی ارسال شد", status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response("متود باید POST باشد", status=status.HTTP_400_BAD_REQUEST)
+
+def reset_password_confirm(request, *args, **kwargs):
+    token = kwargs["token"]
+    try:
+        user = get_user_model().objects.get(reset_password_token=token)
+    except:
+        return HttpResponse('<h3 style="color: red;"> توکن نامعتبر </h3>')
+    if request.method == "POST":
+        form = ResetPasswordFrom(request.POST or None)
+        if form.is_valid():
+            password = form.cleaned_data.get('password1')
+            print(user.username)
+            user.set_password(password)
+            user.reset_password_token = None
+            user.save()
+            return redirect('reset-password-done')
+    else:
+        form = ResetPasswordFrom()
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/reset_password.html', context)
+
+def passowrd_confirm_done(request):
+    setting = Setting.objects.last()
+    url = f"{setting.site_url}login/"
+    context = {
+        'url': url,
+    }
+    return render(request, 'accounts/reset_password_done.html', context)

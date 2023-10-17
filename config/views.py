@@ -1,7 +1,7 @@
-from django.shortcuts import redirect, HttpResponse
-from config import settings
-from django.http import Http404
+from django.shortcuts import redirect
+from setting_app.models import Setting
 
 def home_page(request):
-    if not settings.DEBUG:
-        return redirect('swagger-ui')
+    setting = Setting.objects.last()
+    url = setting.site_url
+    return redirect(url)

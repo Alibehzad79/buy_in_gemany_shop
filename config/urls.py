@@ -21,7 +21,7 @@ from config.views import home_page
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')), # for athentiace from api
-    # path('', home_page),
+    path('', home_page),
     path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
