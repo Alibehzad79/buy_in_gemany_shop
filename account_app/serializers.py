@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.core import validators
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,12 +25,35 @@ class UserDetail(serializers.ModelSerializer):
         model = get_user_model()
         fields = ("username", "first_name", "last_name", "phone_number", "email")
 
+
 class RestPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password1 = serializers.CharField(
+        required=True,
+        validators=[
+            validators.MinLengthValidator(6, "طول کاراکتر باید حداقل 6 باشد"),
+            validators.MaxLengthValidator(12, "طول کاراکتر باید حداکثر 12 باشد"),
+        ],
+        label="رمز عبور جدید",
+        style={'input_type': 'password'},
+    )
+    password2 = serializers.CharField(
+        required=True,
+        validators=[
+            validators.MinLengthValidator(6, "طول کاراکتر باید حداقل 6 باشد"),
+            validators.MaxLengthValidator(12, "طول کاراکتر باید حداکثر 12 باشد"),
+        ],
+        label="تایید رمز عبور",
+        style={'input_type': 'password'},
+    )
     
-    # def clean_email(self):
-    #     email = self.data['email']
-    #     print(email)
-    #     if get_user_model().objects.get(email=email).exists():
-    #         return email
-    #     return serializers.ValidationError("کاربری با این ایمیل یافت نشد.")
+    # def validate_password2(self, data):
+    #     password1 = self.initial_data['password1']
+    #     password2 = self.initial_data['password2']
+    #     print(password2)
+    #     if password1 != password2:
+    #         return serializers.ValidationError("رمز عبور ها یکسان نیست")
+    #     return data
