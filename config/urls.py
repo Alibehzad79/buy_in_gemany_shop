@@ -29,6 +29,7 @@ urlpatterns = [
     path('orders/', include('order_app.urls')),
     path('settings/', include('setting_app.urls')),
     path('accounts/', include('account_app.urls'),),
+    path('dashboard/', include('account_app.dashboard_app.urls'), name='dashboard'),
     path('sliders/', include('slider_app.urls'),),
     path('tinymce/', include('tinymce.urls')),
     path('admin/', admin.site.urls),

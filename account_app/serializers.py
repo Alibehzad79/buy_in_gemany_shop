@@ -49,11 +49,3 @@ class ChangePasswordSerializer(serializers.Serializer):
         label="تایید رمز عبور",
         style={'input_type': 'password'},
     )
-    
-    # def validate_password2(self, data):
-    #     password1 = self.initial_data['password1']
-    #     password2 = self.initial_data['password2']
-    #     print(password2)
-    #     if password1 != password2:
-    #         return serializers.ValidationError("رمز عبور ها یکسان نیست")
-    #     return data

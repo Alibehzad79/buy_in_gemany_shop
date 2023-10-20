@@ -85,6 +85,12 @@ def get_reset_password(request, *args, **kwargs):
 def reset_password_confirm(request, *args, **kwargs):
     time_now = datetime.now() 
     if time_remove_token < time_now:
+        token = kwargs["token"]
+        user = get_user_model().objects.get(reset_password_token=token)
+        try:
+            user.reset_password_token = None
+        except:
+            pass
         return HttpResponse('<h3 style="color: red"> زمان اعتبار توکن به پایان رسیده است.</h3>')
     else:
         if request.method == "POST":
