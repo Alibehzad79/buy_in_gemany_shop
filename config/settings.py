@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'order_app',
     'setting_app',
     'slider_app',
+    'seo_app',
     'account_app.dashboard_app',
     
     # packages
